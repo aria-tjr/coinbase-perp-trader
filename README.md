@@ -1,17 +1,25 @@
 # Bybit Perpetual Trading Bot
 
-A high-performance, aggressive trading bot designed for Bybit perpetual futures markets. This system targets ≥2% daily returns through sophisticated algorithmic strategies and risk management.
+> **Note on the name:** despite the repository name `coinbase-perp-trader`, this is a **Bybit** USDT-perpetual bot (via `ccxt`). It started as a Coinbase International project and was moved to Bybit; some older docs (e.g. `PROJECT_SUMMARY.md`) still mention Coinbase.
+
+An experimental, aggressive trading bot for Bybit perpetual futures. Its design goal is ≥2% daily return; that is a **target, not a measured result**.
+
+## ⚠️ Project status (read first)
+
+- **The `models/` package is missing from the repository.** `core/`, `strategies/`, `backtest*.py` and `position_manager.py` import `models.market_data`, `models.positions` and `models.orders`, so the bot and the backtests **do not run as published** until that package is restored. Cause: the old `.gitignore` rule `models/` (meant for trained weights) also excluded this source package; the rule now ignores only weight files, so the package can be committed.
+- **ML and RL strategies are planned, not implemented:** `strategies/ml_predictor.py` and `strategies/rl_policy.py` are empty files. Only `momentum_breakout.py` and `mean_reversion.py` contain strategy code.
+- **All backtest figures in this repo come from synthetic data.** `backtest.py` (and the aggressive/enhanced variants) generate random-walk candles with `generate_synthetic_data()`; there is no real-market backtest yet.
 
 ## 🚀 Features
 
-- **Multi-Strategy Trading**: Momentum breakout, mean reversion, ML-based predictions, and reinforcement learning
+- **Multi-Strategy Trading**: Momentum breakout and mean reversion (ML-based prediction and reinforcement learning are planned; the files are empty)
 - **Aggressive Risk Management**: Dynamic leverage adjustment, real-time drawdown monitoring
 - **High-Frequency Execution**: Sub-100ms order execution with advanced retry logic
 - **Real-time Monitoring**: Prometheus metrics, Telegram alerts, web dashboard
 - **Paper Trading**: Full simulation mode for strategy testing
 - **Advanced Analytics**: Performance tracking, Sharpe ratio optimization
 
-## 📊 Performance Targets
+## 📊 Performance Targets (design goals, not achieved results)
 
 - **Daily Return**: ≥2%
 - **Sharpe Ratio**: ≥2.0
@@ -32,7 +40,7 @@ A high-performance, aggressive trading bot designed for Bybit perpetual futures 
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/aria-tjr/coinbase-perp-trader.git
 cd coinbase-perp-trader
 
 # Create virtual environment
@@ -181,15 +189,14 @@ Key metrics exported:
 
 ## 🧪 Backtesting
 
+> ⚠️ `backtest.py` runs on **synthetic random-walk candles** (`generate_synthetic_data()`), not historical data, and needs the missing `models/` package.
+
 ```bash
-# Run backtest with historical data
-python backtest.py --start-date 2024-01-01 --end-date 2024-03-01
+# Options: --symbol, --start-date, --end-date (required), --initial-capital, --output
+python backtest.py --start-date 2024-01-01 --end-date 2024-03-01 --symbol BTC/USDT:USDT
 
-# Test specific strategy
-python backtest.py --strategy momentum_breakout --symbol BTCUSDT
-
-# Aggressive backtest (high leverage)
-python backtest.py --config aggressive
+# Aggressive variant
+python backtest_aggressive.py --start-date 2024-01-01 --end-date 2024-03-01
 ```
 
 ## 🚨 Risk Management
@@ -232,20 +239,9 @@ python -c "import psutil; print(f'CPU: {psutil.cpu_percent()}%, RAM: {psutil.vir
 psql -d trading_db -c "SELECT count(*) FROM market_data WHERE timestamp > NOW() - INTERVAL '1 hour';"
 ```
 
-## 📈 Performance Examples
+## 📈 Performance
 
-### Aggressive Strategy Backtest Results
-```
-Period: 2024-01-01 to 2024-03-01 (60 days)
-Starting Capital: $10,000
-Final Capital: $13,847
-Total Return: +38.47%
-Daily Average: +0.64%
-Max Drawdown: -4.12%
-Sharpe Ratio: 2.34
-Win Rate: 67.3%
-Total Trades: 1,247
-```
+No verified performance results yet. An earlier version of this README showed an "aggressive strategy backtest" (+38.47% in 60 days); that figure cannot be reproduced from anything in this repo, and every backtest script here uses synthetic data, so it was removed. `BACKTEST_RESULTS.md` and `ULTRA_AGGRESSIVE_BACKTEST.md` are likewise synthetic-data simulations.
 
 ## ⚠️ Disclaimers
 

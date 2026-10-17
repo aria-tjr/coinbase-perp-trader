@@ -189,7 +189,8 @@ data/
 *.sqlite3
 
 # ML Models
-models/
+models/*.pth
+models/*.pkl
 *.pth
 *.h5
 *.pkl

@@ -1,3 +1,5 @@
+> ⚠️ **Read first:** these results come from a backtest on **synthetic (randomly generated) market data**, not real Bybit prices. They are not evidence of real-market performance.
+
 # 🏆 ULTRA-AGGRESSIVE BACKTEST RESULTS - 15x-25x LEVERAGE
 
 **Period:** 2024-04-23 to 2024-05-23 (30 days)  
