@@ -6,7 +6,7 @@ An experimental, aggressive trading bot for Bybit perpetual futures. Its design 
 
 ## ⚠️ Project status (read first)
 
-- **The `models/` package is missing from the repository.** `core/`, `strategies/`, `backtest*.py` and `position_manager.py` import `models.market_data`, `models.positions` and `models.orders`, so the bot and the backtests **do not run as published** until that package is restored.
+- **The `models/` package is missing from the repository.** `core/`, `strategies/`, `backtest*.py` and `position_manager.py` import `models.market_data`, `models.positions` and `models.orders`, so the bot and the backtests **do not run as published** until that package is restored. Cause: the old `.gitignore` rule `models/` (meant for trained weights) also excluded this source package; the rule now ignores only weight files, so the package can be committed.
 - **ML and RL strategies are planned, not implemented:** `strategies/ml_predictor.py` and `strategies/rl_policy.py` are empty files. Only `momentum_breakout.py` and `mean_reversion.py` contain strategy code.
 - **All backtest figures in this repo come from synthetic data.** `backtest.py` (and the aggressive/enhanced variants) generate random-walk candles with `generate_synthetic_data()`; there is no real-market backtest yet.
 
